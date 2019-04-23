@@ -1,6 +1,6 @@
 /* 
  * File:   PCD.h
- * Author: Brad
+ * Author: Brad McGarvey
  *
  * Created on February 22, 2015, 8:16 PM
  */

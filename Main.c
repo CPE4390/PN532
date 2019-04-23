@@ -9,9 +9,7 @@
 #include "LCD.h"
 #include "PN532.h"
 #include "PCD.h"
-#include <stdio.h>
 
-char lcd[20];
 char buffer[16];
 TypeATarget targets[2];
 MifareKey key = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
@@ -32,8 +30,8 @@ void main(void) {
     PN532Init();
     PN532Reset();
     PN532WakeUp();
-    PN532GetFirmwareVersion(lcd);
-    LCDWriteLine(lcd, 0);
+    PN532GetFirmwareVersion(buffer);
+    lprintf(0, buffer);
     PCDConfigureSAM();
     for (i = 0; i < 16; ++i) {
         buffer[i] = 0;
@@ -42,14 +40,12 @@ void main(void) {
         status = PCDGetPassiveTarget(targets, 1, &tgFound, 0xff);
         LCDClear();
         for (i = 0; i < tgFound; ++i) {
-            sprintf(lcd, "%d %d %02x%02x%02x%02x", targets[i].Tg, targets[i].sak,
+            lprintf(0, "%d %d %02x%02x%02x%02x", targets[i].Tg, targets[i].sak,
                     targets[i].uid[0], targets[i].uid[1], targets[i].uid[2],
                     targets[i].uid[3]);
-            LCDWriteLine(lcd, 0);
             if (targets[i].uidSize > 4) {
-                sprintf(lcd, "%02x%02x%02x", targets[i].uid[4], targets[i].uid[5],
+                lprintf(1, "%02x%02x%02x", targets[i].uid[4], targets[i].uid[5],
                         targets[i].uid[6]);
-                LCDWriteLine(lcd, 1);
             }
             while (PORTBbits.RB0 == 1);
             __delay_ms(15);
@@ -59,13 +55,11 @@ void main(void) {
             //status = MFWriteBlock(&targets[0], sector, block, buffer);
             //status = MFWriteSectorTrailer(&targets[0], sector, key, key, &ab);
             //status = MFWriteValue(&targets[0], sector, block, 12345);
-            //status = MFReadBlock(&targets[0], sector, block, buffer);
-            status = MFDecrement(&targets[0], sector, block, 100);
-            status = MFReadValue(&targets[0], sector, block, &value);
-            //sprintf(lcd, "%02x %02x %02x %02x", buffer[8], buffer[10], buffer[13], buffer[15]);
-            sprintf(lcd, "%ld", value);
-            LCDClearLine(1);
-            LCDWriteLine(lcd, 1);
+            status = MFReadBlock(&targets[0], sector, block, buffer);
+            //status = MFDecrement(&targets[0], sector, block, 100);
+            //status = MFReadValue(&targets[0], sector, block, &value);
+            lprintf(1, "%02x %02x %02x %02x", buffer[0], buffer[1], buffer[2], buffer[3]);
+            //lprintf(1, "%ld", value);
             while (PORTBbits.RB0 == 1);
             __delay_ms(15);
             while (PORTBbits.RB0 == 0);
@@ -79,7 +73,7 @@ void InitSystem(void) {
     TRISBbits.RB0 = 1;
 }
 
-void interrupt HighISR(void) {
+void __interrupt(high_priority) HighISR(void) {
 
 }
 

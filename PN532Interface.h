@@ -9,18 +9,18 @@
 #define	PN532INTERFACE_H
 
 //Uncomment one interface
-#define HSU_INTERFACE
-//#define I2C_INTERFACE
+//#define HSU_INTERFACE
+#define I2C_INTERFACE
 //#define SPI_INTERFACE
 
-#define _XTAL_FREQ      40000000L
+#define _XTAL_FREQ      32000000L
 #define PN532_ACK_TIMEOUT       150 // 150 * 100uS = 15ms
 
 
 #if defined I2C_INTERFACE
 //uController pin assignments for I2C
 /*
- Pin assignmnets for I2C
+ Pin assignments for I2C
  *  MSSP2
  * RD4 = P70_IRQ
  * RD5 = SDA
@@ -43,7 +43,7 @@
 #elif defined HSU_INTERFACE
 //uController pin assignments for HSU
 /*
- Pin assignmnets for HSU
+ Pin assignments for HSU
  *  USART 1
  * RC7 = PN532 TX
  * RC6 = PN532 RX
@@ -63,7 +63,7 @@
 #elif defined SPI_INTERFACE
 //uController pin assignments for SPI
 /*
- Pin assignmnets for SPI
+ Pin assignments for SPI
  *  MSSP2
  * RD2 = NSS
  * RD3 = P70_IRQ
