@@ -22,7 +22,7 @@
 /*
  Pin assignments for I2C
  *  MSSP2
- * RD4 = P70_IRQ
+ * RD4 = IRQ
  * RD5 = SDA
  * RD6 = SCL
  * RD7 = RSTPD_N
@@ -38,7 +38,7 @@
 #define PN532_TRIS()      TRISDbits.TRISD7 = 0;TRISDbits.TRISD4 = 1
 
 #define MSSPx           2   //1 or 2 to select MSSP1 or MSSP2 for I2C
-#define I2C_BAUD        400000L //set to 100000L or 400000L
+#define I2C_BAUD        100000L //set to 100000L or 400000L
 
 #elif defined HSU_INTERFACE
 //uController pin assignments for HSU
